@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const { join } = require("path");
 const fs = require("fs");
+const path = require("path");
 const WasmMainTemplatePlugin = require("webpack/lib/wasm/WasmMainTemplatePlugin");
 
 function error(msg) {
@@ -37,6 +38,19 @@ if (Array.isArray(config)) {
 
 const compiler = webpack(config);
 const fullConfig = compiler.options;
+
+const files = [];
+fullConfig.module.rules.push({
+  test: /\.txt$/,
+  use: [
+    {
+      loader: path.join(__dirname, "file-loader.js"),
+      options: {
+        files
+      }
+    }
+  ]
+});
 
 function filterByExtension(ext) {
   return v => v.indexOf("." + ext) !== -1;
@@ -77,7 +91,8 @@ const compilerCallback = (err, stats) => {
     const bundle = {
       wasm: null,
       script: "",
-      errors: jsonStats.errors
+      errors: jsonStats.errors,
+      files,
     };
 
     const wasmModuleAsset = Object.keys(assets).find(filterByExtension("wasm"));

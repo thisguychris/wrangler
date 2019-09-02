@@ -1,6 +1,17 @@
 #![allow(clippy::redundant_closure)]
 
 #[macro_use]
+extern crate lazy_static;
+
+use crate::commands::build::wranglerjs::output::WranglerjsOutputFile;
+use std::sync::Mutex;
+
+// FIXME: obviously remove that
+lazy_static! {
+    static ref SVEN_HACK_TO_GET_FILES: Mutex<Vec<WranglerjsOutputFile>> = Mutex::new(vec![]);
+}
+
+#[macro_use]
 extern crate text_io;
 
 use std::env;

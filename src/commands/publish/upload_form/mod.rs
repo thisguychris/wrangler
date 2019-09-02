@@ -13,6 +13,7 @@ use crate::settings::metadata::Metadata;
 use crate::settings::project::kv_namespace;
 use crate::settings::project::{Project, ProjectType};
 
+use crate::settings::binding::Binding;
 use project_assets::ProjectAssets;
 use wasm_module::WasmModule;
 
@@ -91,6 +92,16 @@ fn add_files(mut form: Form, assets: &ProjectAssets) -> Result<Form, failure::Er
     for wasm_module in &assets.wasm_modules {
         form = form.file(wasm_module.filename(), wasm_module.path())?;
     }
+    let bindings = assets.bindings();
+    for t in bindings {
+        match t {
+            Binding::TextBlob { name, part } => {
+                println!("path {:?}", Path::new("./worker").join(part.clone()));
+                form = form.file(part.clone(), Path::new("./worker").join(part))?;
+            }
+            _ => {}
+        }
+    }
 
     Ok(form)
 }
@@ -100,6 +111,7 @@ fn add_metadata(mut form: Form, assets: &ProjectAssets) -> Result<Form, failure:
         body_part: assets.script_name(),
         bindings: assets.bindings(),
     });
+    println!("metadata_json: {}", metadata_json);
 
     let metadata = Part::text((metadata_json).to_string())
         .file_name("metadata.json")

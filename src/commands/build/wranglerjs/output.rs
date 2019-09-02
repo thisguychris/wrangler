@@ -1,9 +1,23 @@
+use crate::settings::binding::Binding;
 use crate::terminal::emoji;
 use flate2::write::ZlibEncoder;
 use flate2::Compression;
 use number_prefix::{NumberPrefix, Prefixed, Standalone};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::io::prelude::*;
+use std::str;
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct WranglerjsOutputFile {
+    pub name: String,
+    // in base64
+    pub content: String,
+}
+impl WranglerjsOutputFile {
+    pub fn binding(&self) -> Binding {
+        Binding::new_text_blob(&self.name.to_uppercase(), &self.name)
+    }
+}
 
 // This structure represents the communication between {wranglerjs} and
 // {wrangler}. It is send back after {wranglerjs} completion.
@@ -14,6 +28,8 @@ pub struct WranglerjsOutput {
     pub script: String,
     // Errors emited by {wranglerjs}, if any
     pub errors: Vec<String>,
+    // Files from {wranglerjs}
+    pub files: Vec<WranglerjsOutputFile>,
 }
 
 impl WranglerjsOutput {

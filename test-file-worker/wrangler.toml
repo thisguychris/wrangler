@@ -1,0 +1,6 @@
+name = "test-wrangler-files"
+type = "webpack"
+zone_id = "a90747b611c90f3505a9f7309441ba15"
+private = false
+account_id = "21c4a672ebad28500b365999974bd35b"
+route = "that-test.site/test-wrangler-files"

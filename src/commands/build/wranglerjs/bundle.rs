@@ -47,6 +47,16 @@ impl Bundle {
             wasm_file.write_all(&wasm)?;
         }
 
+        for file in &wranglerjs_output.files {
+            crate::SVEN_HACK_TO_GET_FILES
+                .lock()
+                .unwrap()
+                .push(file.clone());
+            let content = decode(&file.content).expect("could not decode file in base64");
+            let mut worker_file = File::create(Path::new(&self.out).join(file.name.clone()))?;
+            worker_file.write_all(&content)?;
+        }
+
         script_file.write_all(script.as_bytes())?;
 
         Ok(())

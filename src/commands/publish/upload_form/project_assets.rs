@@ -41,6 +41,11 @@ impl ProjectAssets {
             let binding = kv.binding();
             bindings.push(binding);
         }
+        let files = crate::SVEN_HACK_TO_GET_FILES.lock().unwrap().clone();
+        for file in files {
+            let binding = file.binding();
+            bindings.push(binding);
+        }
 
         bindings
     }
