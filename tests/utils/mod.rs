@@ -7,11 +7,22 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::sync::Mutex;
 
+use wrangler::settings::target::Manifest;
+
 lazy_static! {
     static ref BUILD_LOCK: Mutex<u8> = Mutex::new(0);
 }
 
 const BUNDLE_OUT: &str = "./worker";
+
+pub fn test_toml() -> Manifest {
+    let mut toml = Manifest::default();
+    toml.name = "test".to_string();
+    // valid toml needs either workers_dev or zone_id/route
+    toml.workers_dev = Some(true);
+
+    toml
+}
 
 pub fn cleanup(fixture: &str) {
     let path = fixture_path(fixture);
