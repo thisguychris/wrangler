@@ -382,6 +382,19 @@ fn run() -> Result<(), failure::Error> {
                         .index(1),
                 ),
         )
+        .subcommand(
+            SubCommand::with_name("curl")
+                .about(&*format!(
+                    "{} cURL your Worker",
+                    emoji::CURL
+                ))
+                .arg(
+                    Arg::with_name("url")
+                        .help("the url")
+                        .required(true)
+                        .index(1)
+                )
+        )
         .subcommand(SubCommand::with_name("whoami").about(&*format!(
             "{} Retrieve your user info and test your auth config",
             emoji::SLEUTH
@@ -473,6 +486,14 @@ fn run() -> Result<(), failure::Error> {
         let verbose = matches.is_present("verbose");
 
         commands::preview(target, user, method, body, watch, verbose)?;
+    } else if matches.subcommand_matches("curl").is_some() {
+        println!("{:?}", matches.value_of("url"));
+    // if let Some(options) = matches.values_of("trailing") {
+    //     let options: Vec<&str> = options.collect();
+    //     dbg!(options);
+    // } else {
+    //     println!("we got nothin");
+    // }
     } else if matches.subcommand_matches("whoami").is_some() {
         log::info!("Getting User settings");
         let user = settings::global_user::GlobalUser::new()?;

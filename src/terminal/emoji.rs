@@ -15,6 +15,7 @@ use console::Emoji;
 
 pub static BICEP: Emoji = Emoji("💪 ", "");
 pub static CRAB: Emoji = Emoji("🦀 ", "");
+pub static CURL: Emoji = Emoji("🥌 ", "");
 pub static DANCERS: Emoji = Emoji("👯 ", "");
 pub static EYES: Emoji = Emoji("👀 ", "");
 pub static FILES: Emoji = Emoji("🗂️ ", "");
