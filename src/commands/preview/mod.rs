@@ -47,7 +47,8 @@ pub fn preview(
     let https_str = if https { "https://" } else { "http://" };
 
     if livereload {
-        let server = WebSocket::new(|out| FiddleMessageServer { out })?.bind("127.0.0.1:0")?; //explicitly use 127.0.0.1, since localhost can resolve to 2 addresses
+        // explicitly use 127.0.0.1, since localhost can resolve to 2 addresses
+        let server = WebSocket::new(|out| FiddleMessageServer { out })?.bind("127.0.0.1:0")?;
 
         let ws_port = server.local_addr()?.port();
 
@@ -58,7 +59,7 @@ pub fn preview(
             &session.to_string(), ws_port, script_id, https_str, preview_host,
         ))?;
 
-        //don't do initial GET + POST with livereload as the expected behavior is unclear.
+        // don't do initial GET + POST with livereload as the expected behavior is unclear.
 
         let broadcaster = server.broadcaster();
         thread::spawn(move || server.run());
