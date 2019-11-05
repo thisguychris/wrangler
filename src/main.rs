@@ -404,7 +404,6 @@ fn run() -> Result<(), failure::Error> {
 
         let user: GlobalUser = if default {
             // Default: use API token.
-            message::info("Looking to use a Global API Key and email instead? Run \"wrangler config --api-key\". (Not Recommended)");
             println!("Enter API token: ");
             let mut api_token: String = read!("{}\n");
             api_token.truncate(api_token.trim_end().len());
